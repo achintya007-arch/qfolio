@@ -133,23 +133,43 @@ def transpile_pubs(
     return isa, layouts, physical
 
 
+def is_fake_backend(backend: BackendV2) -> bool:
+    """True for ``qiskit_ibm_runtime.fake_provider`` backends (local Aer simulation)."""
+    from qiskit_ibm_runtime.fake_provider.fake_backend import FakeBackendV2
+
+    return isinstance(backend, FakeBackendV2)
+
+
+def sampler_options(
+    shots: int, seed: int, dd: bool, twirl: bool, simulator: bool
+) -> dict[str, Any]:
+    """``SamplerV2`` options: XY4 dynamical decoupling and gate + readout twirling.
+
+    ``simulator`` adds ``simulator.seed_simulator``. It must be False for real devices:
+    IBM rejects the whole job if any simulator field is set (error 3211, hit on 2026-10-08).
+    """
+    opts: dict[str, Any] = {
+        "default_shots": shots,
+        "dynamical_decoupling": {"enable": dd, **({"sequence_type": "XY4"} if dd else {})},
+        "twirling": {"enable_gates": twirl, "enable_measure": twirl},
+    }
+    if simulator:
+        opts["simulator"] = {"seed_simulator": seed}
+    return opts
+
+
 def configure_sampler(backend: BackendV2, shots: int, seed: int, dd: bool, twirl: bool) -> Any:
-    """``SamplerV2`` in job mode with XY4 dynamical decoupling and gate + readout twirling.
+    """``SamplerV2`` in job mode with the options above; simulator seed only for fake backends.
 
     Open Plan supports job mode (sessions need a paid plan). On a fake backend the runtime
     runs locally on Aer and ignores DD / twirling, but the code path is the same.
+    NOTE(achintya): we check the backend's type, not the --dry-run flag, so a real device can
+    never receive simulator options, whatever flags the script was called with.
     """
     from qiskit_ibm_runtime import SamplerV2
 
-    sampler = SamplerV2(mode=backend)
-    sampler.options.default_shots = shots
-    sampler.options.dynamical_decoupling.enable = dd
-    if dd:
-        sampler.options.dynamical_decoupling.sequence_type = "XY4"
-    sampler.options.twirling.enable_gates = twirl
-    sampler.options.twirling.enable_measure = twirl
-    sampler.options.simulator.seed_simulator = seed  # only used by local (fake) runs
-    return sampler
+    opts = sampler_options(shots, seed, dd, twirl, simulator=is_fake_backend(backend))
+    return SamplerV2(mode=backend, options=opts)
 
 
 def circuit_stats(tc: QuantumCircuit) -> dict[str, int]:

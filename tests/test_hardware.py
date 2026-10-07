@@ -75,3 +75,33 @@ def test_dry_run_on_fake_torino(tmp_path, monkeypatch, capsys):
         # Noisy, but the trained angles still beat a uniform random basket (1/6).
         assert run["raw"]["p_optimal"] > record["p_random"]
     assert len(record["readout_matrices"]) == len(record["calibrated_qubits"])
+
+
+def test_real_backend_options_have_no_simulator_fields():
+    # IBM rejects a job with any simulator.* option (error 3211), so real runs must omit them.
+    from qiskit_ibm_runtime.options import SamplerOptions
+
+    opts = hw.sampler_options(8192, seed=2026, dd=True, twirl=True, simulator=False)
+    assert "simulator" not in opts
+    parsed = SamplerOptions(**opts)  # the options must still be valid SamplerV2 options
+    assert parsed.default_shots == 8192
+    assert parsed.dynamical_decoupling.sequence_type == "XY4"
+    assert all(not str(k).startswith("simulator") for k in _flatten(opts))
+
+
+def test_fake_backend_options_keep_simulator_seed():
+    from qiskit.providers.fake_provider import GenericBackendV2
+    from qiskit_ibm_runtime.fake_provider import FakeTorino
+
+    assert hw.is_fake_backend(FakeTorino())
+    assert not hw.is_fake_backend(GenericBackendV2(4))  # stands in for a real device
+    opts = hw.sampler_options(1024, seed=7, dd=False, twirl=False, simulator=True)
+    assert opts["simulator"] == {"seed_simulator": 7}
+
+
+def _flatten(d, prefix=""):
+    for k, v in d.items():
+        key = f"{prefix}{k}"
+        yield key
+        if isinstance(v, dict):
+            yield from _flatten(v, f"{key}.")
