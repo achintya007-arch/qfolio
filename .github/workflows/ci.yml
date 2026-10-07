@@ -75,4 +75,7 @@ jobs:
           python-version: "3.12"
       - run: pip install "detect-secrets>=1.5"
       - name: Fail on any secret not in the baseline
-        run: git ls-files -z | xargs -0 detect-secrets-hook --baseline .secrets.baseline
+        # config_hash (12 hex chars of the config's SHA-256) in results/*.json is not a secret.
+        run: >-
+          git ls-files -z | xargs -0 detect-secrets-hook --baseline .secrets.baseline
+          --exclude-lines '"config_hash": "[0-9a-f]{12}"'
