@@ -24,12 +24,17 @@
 - Circuits in **one job** (fewer queue waits):
   - PUB 0: XY-QAOA p=1 with simulator-trained parameters, 8192 shots
   - PUB 1: XY-QAOA p=2 (optional, deeper; shows the depth vs noise trade-off)
-  - PUB 2–3: readout calibration (all-0, all-X) on the **same physical qubits** (`initial_layout`)
+  - PUB 2–3: readout calibration (all-0, all-X) on the **same physical qubits** (`initial_layout` = union of the final layouts of PUB 0–1, since routing may move them)
 - Options: XY4 dynamical decoupling, gate + measurement twirling.
 - Expected QPU usage: a few seconds.
 
 ## 2. Commands
+Parameters are trained on the statevector simulator (`qaoa.optimize`, config `qaoa` restarts/maxiter);
+hardware only runs the fixed angles. Every mode prints the cost gap between the best and second-best basket.
 ```bash
+# Rehearsal: identical PUBs through the identical SamplerV2 code path, on FakeTorino (local, no account)
+python scripts/run_hardware.py --dry-run           # → results/hardware/dry_run_fake_torino.json
+
 # Day 1, ~23:30: submit and go to sleep
 python scripts/run_hardware.py --submit            # least-busy backend, or --backend ibm_torino
 # → writes results/hardware/pending.json  {job_id, backend, submitted_at, circuits, layout, params}

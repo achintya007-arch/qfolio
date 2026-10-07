@@ -24,5 +24,5 @@ Goal: every scientific claim in the README is backed by a test or by a reproduci
 | `test_data.py` | cached CSV loads; μ, Σ shapes; Σ symmetric PSD | data sanity | fast |
 
 Markers: `@pytest.mark.slow` excluded from `make test` and included in `make test-all` and CI's nightly-style job.
-Coverage target: ≥ 85% of `src/qportfolio` (excluding `hardware.py`, which is network-bound and checked by a dry-run test that mocks `QiskitRuntimeService`).
+Coverage target: ≥ 85% of `src/qportfolio` (excluding `hardware.py`, which is network-bound and checked by `tests/test_hardware.py`: fast tests for the readout helpers, plus a slow `--dry-run` test on FakeTorino that replaces `QiskitRuntimeService` with a function that fails, proving no network access).
 Notebook: `pytest --nbmake notebooks/` with `QFOLIO_FAST=1` (fewer restarts and shots) runs in CI.

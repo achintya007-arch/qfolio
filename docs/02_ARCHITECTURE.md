@@ -32,7 +32,7 @@ src/qportfolio/
 ├── qaoa.py            # optimize, sample, linear_ramp_init
 ├── metrics.py         # evaluate_counts, approximation_ratio
 ├── noise.py           # fake_backend_sampler, transpile_report, postselect, readout_mitigate
-├── hardware.py        # submit, collect (IBM Runtime), save evidence
+├── hardware.py        # backend, transpile + readout-cal PUBs, SamplerV2 options, scoring
 ├── viz.py             # one function per figure
 ├── io.py              # save_result / load_result (JSON + metadata)
 └── demo.py            # `python -m qportfolio.demo` – checkpoint demo
@@ -97,9 +97,21 @@ def postselect(counts, k: int) -> dict[str, int]: ...
 def readout_calibration(backend, layout, shots, seed) -> list[np.ndarray]: ...   # per-qubit 2×2
 def readout_mitigate(counts, cal_mats) -> dict[str, float]: ...  # tensored inverse, clipped & renormalised
 
-# hardware.py
-def submit(circ, params, backend_name: str | None, shots: int, options: dict) -> str: ...  # job id
-def collect(job_id: str) -> dict: ...
+# hardware.py  (one job = all QAOA depths + 2 readout-calibration PUBs; see docs/06)
+# NOTE (2026-10-08): replaces submit()/collect(). Submit/status/collect orchestration lives in
+# scripts/run_hardware.py (I/O); this module holds the pure / backend-facing pieces.
+# readout_matrices / readout_mitigate live here until P4 builds noise.py.
+def get_backend(name: str | None, dry_run: bool, min_qubits: int = 8) -> BackendV2: ...  # FakeTorino if dry_run
+def fetch_job(job_id: str) -> RuntimeJobV2: ...
+def cost_gap(p: PortfolioProblem) -> dict: ...          # best / second-best basket and their gap
+def calibration_circuits(n: int) -> list[QuantumCircuit]: ...   # all-0, all-1
+def readout_matrices(counts0, counts1, n: int) -> list[np.ndarray]: ...   # M[measured, prepared]
+def readout_mitigate(counts, cal_mats) -> dict[str, float]: ...
+def transpile_pubs(qaoa_circuits, backend, seed) -> tuple[list[QuantumCircuit], list[list[int]], list[int]]: ...
+def configure_sampler(backend, shots, seed, dd: bool, twirl: bool) -> SamplerV2: ...
+def circuit_stats(tc) -> dict: ...                       # depth, two_qubit_gates
+def backend_snapshot(backend, qubits) -> dict: ...       # median T1/T2, readout and 2q error
+def summarise(p, pub_counts, meta) -> dict: ...          # raw / post-selected / mitigated metrics
 ```
 
 ## Scripts (I/O lives here)
@@ -109,7 +121,7 @@ def collect(job_id: str) -> dict: ...
 | `scripts/show_instance.py` | prints μ, Σ, all C(n,k) feasible baskets sorted by cost, and the optimum |
 | `scripts/run_benchmark.py` | multi-instance classical vs penalty-QAOA vs XY-QAOA → `results/benchmark.json` |
 | `scripts/run_noisy.py` | transpile table + noisy runs + mitigation → `results/noisy.json` |
-| `scripts/run_hardware.py` | `--submit` / `--collect` → `results/hardware/<job_id>.json` |
+| `scripts/run_hardware.py` | `--dry-run` (FakeTorino, same SamplerV2 path) / `--submit` / `--status` / `--collect` → `results/hardware/<job_id>.json` |
 | `scripts/make_figures.py` | all figures from `results/*.json` |
 | `scripts/fill_readme.py` | replaces the `⟨…⟩` README tables from JSON (between `<!-- RESULTS:START -->` markers) |
 | `scripts/build_report.sh` | executes the notebook → HTML → `site/` |
