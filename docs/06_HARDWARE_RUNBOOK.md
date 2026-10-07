@@ -55,4 +55,5 @@ Also commit a screenshot of the job page from the IBM dashboard: `results/hardwa
 | Queue > 6 h | Keep the job, and also run on a different backend with a shorter queue (`service.backends()` → pending_jobs) |
 | `IBMNotAuthorizedError` | Re-save the account; check the instance CRN |
 | Results are pure noise | Report it honestly; show that p=1 survives better than p=2 and that post-selection helps. That is still a valid noise-aware result |
+| `--status` shows `ERROR` (it prints `job.error_message()`) | Save `results/hardware/failed_<job_id>.json` with the message, fix, dry-run, resubmit. Error 3211 "Options field seed_simulator is not valid" = simulator options sent to a real device (pitfall #11, fixed) |
 | Job not done by 12:30 Day 2 | Submit with the job ID + "pending" in README; the noisy-sim ladder carries the story |

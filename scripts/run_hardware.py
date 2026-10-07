@@ -146,10 +146,13 @@ def load_pending(outdir: Path) -> dict[str, Any]:
 
 
 def cmd_status(outdir: Path) -> None:
-    """Print the queue status of the pending job."""
+    """Print the queue status of the pending job, and the error message if it failed."""
     meta = load_pending(outdir)
     job = hw.fetch_job(meta["job_id"])
-    print(f"Job {meta['job_id']} on {meta['backend']}: {job.status()}")
+    status = str(job.status())
+    print(f"Job {meta['job_id']} on {meta['backend']}: {status}")
+    if status == "ERROR":
+        print(f"  error: {job.error_message()}")
 
 
 def cmd_collect(cfg: Any, outdir: Path) -> None:

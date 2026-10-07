@@ -1,0 +1,24 @@
+{
+  "meta": {
+    "created": "2026-10-07T20:52:18+00:00",
+    "git_sha": "278be71",
+    "config_hash": "64b67f76c951",
+    "versions": {
+      "qiskit": "2.5.2",
+      "qiskit-aer": "0.17.2",
+      "qiskit-ibm-runtime": "0.50.0",
+      "numpy": "2.5.3",
+      "scipy": "1.18.1",
+      "pandas": "3.0.6"
+    }
+  },
+  "job_id": "db3attimb58s7387dsd0",
+  "backend": "ibm_kingston",
+  "status": "ERROR",
+  "error_message": "Error code 3211; Job not valid. Options field seed_simulator is not valid for this backend",
+  "submitted_at": "2026-10-07T20:43:34.409437+00:00",
+  "submitted_from_git_sha": "083d592",
+  "cause": "SamplerV2 options set simulator.seed_simulator for a real device",
+  "fixed_in": "278be71",
+  "resubmitted_as": "db3b1bimb58s7387e0jg"
+}

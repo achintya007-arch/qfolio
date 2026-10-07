@@ -18,6 +18,7 @@ reference into the modules listed in `02_ARCHITECTURE.md` instead of re-deriving
 | 8 | n = 6, k = 3 XY-QAOA on hardware | ~100+ two-qubit gates after routing, mostly noise | Hardware instance is **n = 4, k = 2** (52 two-qubit gates on Torino at p=1) |
 | 9 | `yfinance` blocked behind proxies / in CI | Empty DataFrame | Fetch once locally, commit `data/prices.csv`; CI never touches the network |
 | 10 | IBM channel name | `ibm_quantum` channel was retired with the classic platform | Use `channel="ibm_quantum_platform"` |
+| 11 | `sampler.options.simulator.seed_simulator` set for a real device | Job `db3attimb58s7387dsd0` on ibm_kingston: `ERROR`, "Error code 3211; Job not valid. Options field seed_simulator is not valid for this backend". The FakeTorino dry run passed because local mode accepts it | Set `simulator.*` options only for `fake_provider` backends: `hardware.sampler_options(..., simulator=is_fake_backend(backend))`, checked by backend type, not by the CLI flag. Unit-tested |
 
 ## Validation numbers (synthetic instance, seed 7, n = 6, k = 3, 8192 shots): superseded
 
