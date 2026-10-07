@@ -65,8 +65,10 @@ def x_to_bitstring(x: np.ndarray) -> str: ...
 # classical.py
 @dataclass
 class ClassicalResult: x: np.ndarray; cost: float; evaluations: int; seconds: float; method: str
+    samples: np.ndarray | None = None   # SA: final x of every read, for P(optimal) over reads
 def brute_force(p: PortfolioProblem) -> tuple[ClassicalResult, np.ndarray]: ...  # (best, all feasible costs)
-def simulated_annealing(p: PortfolioProblem, penalty: float, sweeps: int, seed: int) -> ClassicalResult: ...
+def simulated_annealing(p: PortfolioProblem, penalty: float, sweeps: int, seed: int,
+                        reads: int = 1) -> ClassicalResult: ...  # reads = classical.sa_reads
 def greedy(p: PortfolioProblem) -> ClassicalResult: ...
 
 # circuits.py
@@ -102,7 +104,8 @@ def collect(job_id: str) -> dict: ...
 ## Scripts (I/O lives here)
 | Script | Does |
 |---|---|
-| `scripts/fetch_data.py` | yfinance → `data/prices.csv` (the only network access) |
+| `scripts/fetch_data.py` | yfinance → `data/prices.csv` + `prices.meta.json` (the only network access) |
+| `scripts/show_instance.py` | prints μ, Σ, all C(n,k) feasible baskets sorted by cost, and the optimum |
 | `scripts/run_benchmark.py` | multi-instance classical vs penalty-QAOA vs XY-QAOA → `results/benchmark.json` |
 | `scripts/run_noisy.py` | transpile table + noisy runs + mitigation → `results/noisy.json` |
 | `scripts/run_hardware.py` | `--submit` / `--collect` → `results/hardware/<job_id>.json` |
