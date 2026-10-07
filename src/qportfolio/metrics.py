@@ -13,16 +13,19 @@ def evaluate_counts(
     feasible_costs: np.ndarray,
     best_x: np.ndarray,
 ) -> dict[str, float]:
-    """Return p_feasible, p_optimal, p_optimal_postselected, approx_ratio,
+    """Return p_feasible, p_optimal, p_optimal_postselected, p_top2, approx_ratio,
     top1_is_optimal, expected_cost and shots for a counts dict.
 
     ``feasible_costs`` and ``best_x`` come from ``classical.brute_force`` so every method is
-    scored against the same reference. Infeasible samples count towards ``shots`` but not
-    towards ``expected_cost`` / ``approx_ratio`` (those are conditional on feasibility).
+    scored against the same reference; ``feasible_costs`` must be in ``p.feasible_set()`` order
+    (it is) so we can find the two lowest-cost baskets for P(top-2). Infeasible samples count
+    towards ``shots`` but not towards ``expected_cost`` / ``approx_ratio`` (those are
+    conditional on feasibility).
     """
     best_x = np.asarray(best_x)
+    top2 = {tuple(x) for x in p.feasible_set()[np.argsort(feasible_costs)[:2]]}
     shots = sum(counts.values())
-    n_feasible = n_optimal = 0
+    n_feasible = n_optimal = n_top2 = 0
     cost_sum = 0.0
     top_count, top_x = -1, None
     for bits, c in counts.items():
@@ -35,12 +38,15 @@ def evaluate_counts(
             top_count, top_x = c, x
         if (x == best_x).all():
             n_optimal += c
+        if tuple(x) in top2:
+            n_top2 += c
 
     expected_cost = cost_sum / n_feasible if n_feasible else float("nan")
     return {
         "p_feasible": n_feasible / shots,
         "p_optimal": n_optimal / shots,
         "p_optimal_postselected": n_optimal / n_feasible if n_feasible else 0.0,
+        "p_top2": n_top2 / shots,
         "approx_ratio": (
             approximation_ratio(expected_cost, feasible_costs.min(), feasible_costs.max())
             if n_feasible

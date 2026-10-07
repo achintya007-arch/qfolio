@@ -44,8 +44,10 @@ switch ($Target) {
     "test" { Invoke-Step $Py @("-m", "pytest") }
     "test-all" { Invoke-Step $Py @("-m", "pytest", "-m", "", "--cov", "--cov-report=term-missing") }
     "reproduce" {
+        # Full benchmark (~15 min); set $env:QFOLIO_FAST = "1" first for a CI-sized run.
         Invoke-Step $Py @("scripts/run_benchmark.py")
-        Invoke-Step $Py @("scripts/run_noisy.py")
+        # P4 (noise study) is optional until scripts/run_noisy.py exists.
+        if (Test-Path "scripts/run_noisy.py") { Invoke-Step $Py @("scripts/run_noisy.py") }
         Invoke-Step $Py @("scripts/make_figures.py")
     }
     "notebook" {

@@ -14,6 +14,7 @@ MODULES = [
     "circuits",
     "qaoa",
     "metrics",
+    "benchmark",
     "noise",
     "hardware",
     "viz",

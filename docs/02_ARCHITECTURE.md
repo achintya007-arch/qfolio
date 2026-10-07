@@ -31,6 +31,7 @@ src/qportfolio/
 ├── circuits.py        # dicke_state, xy_ring_mixer, build_qaoa
 ├── qaoa.py            # optimize, sample, linear_ramp_init
 ├── metrics.py         # evaluate_counts, approximation_ratio
+├── benchmark.py       # robustness_specs, run_instance, summarise (pure; script does I/O)
 ├── noise.py           # fake_backend_sampler, transpile_report, postselect, readout_mitigate
 ├── hardware.py        # backend, transpile + readout-cal PUBs, SamplerV2 options, scoring
 ├── viz.py             # one function per figure
@@ -87,7 +88,15 @@ def sample(ansatz, params, sampler=None, shots: int = 4096,
 # metrics.py
 def evaluate_counts(counts: dict[str, int], p: PortfolioProblem,
                     feasible_costs: np.ndarray, best_x: np.ndarray) -> dict[str, float]: ...
-# keys: p_feasible, p_optimal, p_optimal_postselected, approx_ratio, top1_is_optimal, expected_cost, shots
+# keys: p_feasible, p_optimal, p_optimal_postselected, p_top2, approx_ratio, top1_is_optimal, expected_cost, shots
+
+# benchmark.py  (methods: random, brute_force, greedy, simulated_annealing,
+#                penalty_qaoa_p1..2, xy_qaoa_p1..3; all scored by evaluate_counts)
+def robustness_specs(universe, size, q_values, instances, seed) -> list[tuple[tuple[str, ...], float]]: ...
+def random_baseline(costs: np.ndarray) -> dict: ...                # analytic floor
+def run_instance(p, settings: dict, seed: int, keep_counts: bool = False) -> dict: ...
+def summarise(instances: list[dict]) -> dict: ...                  # mean ± std per method
+def gap_stats(instances: list[dict]) -> dict: ...                  # optimum vs runner-up gap
 
 # noise.py
 def fake_backend(name: str = "FakeTorino"): ...
@@ -143,6 +152,10 @@ hardware: {backend: null, shots: 8192, dynamical_decoupling: true, twirling: tru
 ```
 
 ## Results schema (`results/*.json`)
+`benchmark.json`: instance 0 is the headline real-data instance (`"kind": "headline"`, also stored
+raw counts + every basket's risk/return); instances 1..24 are `"kind": "robustness"`. `summary`
+is mean ± std (ddof 0) over the **robustness set only**; `headline` repeats instance 0's methods.
+
 ```json
 {"meta": {"created": "ISO-8601", "git_sha": "…", "config_hash": "…", "versions": {"qiskit": "2.x", "…": "…"}},
  "instances": [{"id": 0, "tickers": ["…"], "k": 3, "q": 0.5,

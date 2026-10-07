@@ -216,16 +216,11 @@ def summarise(
     feas = p.feasible_set()
     costs = np.array([p.cost(x) for x in feas])
     best_x = feas[costs.argmin()]
-    top2 = {x_to_bitstring(feas[i]) for i in np.argsort(costs)[:2]}
     physical = meta["calibrated_qubits"]
     all_mats = readout_matrices(pub_counts[-2], pub_counts[-1], len(physical))
 
     def score(counts: dict[str, float]) -> dict[str, Any]:
-        m = evaluate_counts(counts, p, costs, best_x)
-        total = sum(counts.values())
-        # NOTE(achintya): P(top-2) computed here until P3 adds p_top2 to metrics.py.
-        m["p_top2"] = sum(c for b, c in counts.items() if b in top2) / total
-        return m
+        return evaluate_counts(counts, p, costs, best_x)  # includes p_top2
 
     runs = []
     for i, reps in enumerate(meta["reps"]):

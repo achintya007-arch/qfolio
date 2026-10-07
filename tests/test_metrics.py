@@ -27,6 +27,7 @@ def test_known_counts(setup):
     assert m["p_feasible"] == pytest.approx(0.8)
     assert m["p_optimal"] == pytest.approx(0.6)
     assert m["p_optimal_postselected"] == pytest.approx(0.75)
+    assert m["p_top2"] == pytest.approx(0.6)  # the worst basket is not in the top 2
     assert m["top1_is_optimal"] is True
     # E[C | feasible] = 0.75 C_min + 0.25 C_max  →  AR = 0.75
     assert m["expected_cost"] == pytest.approx(0.75 * costs.min() + 0.25 * costs.max())

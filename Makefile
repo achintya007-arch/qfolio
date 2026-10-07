@@ -22,7 +22,7 @@ test-all:
 
 reproduce:
 	$(PY) scripts/run_benchmark.py
-	$(PY) scripts/run_noisy.py
+	if [ -f scripts/run_noisy.py ]; then $(PY) scripts/run_noisy.py; fi
 	$(PY) scripts/make_figures.py
 
 notebook:
