@@ -69,9 +69,17 @@ def main() -> None:
     }
 
     jobs = [
-        (0, "headline", tuple(raw["data"]["tickers"]), raw["problem"]["k"],
-         float(raw["problem"]["q"]), settings, cfg.seed, raw)
-    ]  # fmt: skip
+        (
+            0,
+            "headline",
+            tuple(raw["data"]["tickers"]),
+            raw["problem"]["k"],
+            float(raw["problem"]["q"]),
+            settings,
+            cfg.seed,
+            raw,
+        )
+    ]
     specs = robustness_specs(
         raw["data"]["universe"], b["universe_size"], b["q_values"], b["instances"], cfg.seed
     )
@@ -90,15 +98,19 @@ def main() -> None:
     robust = [r for r in instances if r["kind"] == "robustness"]
     out = save_result(
         {
-            "settings": {**settings, "fast_mode": is_fast_mode(), "workers": args.workers,
-                         "total_seconds": total},
+            "settings": {
+                **settings,
+                "fast_mode": is_fast_mode(),
+                "workers": args.workers,
+                "total_seconds": total,
+            },
             "instances": instances,
             "headline": instances[0]["methods"],
             "summary": summarise(robust),
             "gaps": {"headline": instances[0]["gap"], "robustness": gap_stats(robust)},
         },
         args.out,
-    )  # fmt: skip
+    )
     print(f"wrote {Path(out)} in {total:.0f} s")
 
 

@@ -171,3 +171,33 @@ def gap_stats(instances: list[dict[str, Any]]) -> dict[str, float]:
         "relative_gap_median": float(np.median(rel)),
         "relative_gap_min": float(rel.min()),
     }
+
+
+def scaling_rows(ns: tuple[int, ...] = (4, 6, 8, 10, 12, 14), seed: int = 0) -> list[dict]:
+    """Search-space size and p=1 XY-QAOA gate counts vs n (k = n/2), for the scaling figure.
+
+    Gate counts are logical (all-to-all, basis cx/rz/sx/x, opt level 1): a lower bound on
+    what heavy-hex hardware needs after routing. No timing is extrapolated (docs/05 §5).
+    """
+    from qiskit import transpile
+
+    from qportfolio.data import synthetic_instance
+
+    rows = []
+    for n in ns:
+        mu, sigma = synthetic_instance(n, seed)
+        ansatz, _ = build_qaoa(PortfolioProblem(mu, sigma, k=n // 2), reps=1, variant="xy")
+        tc = transpile(
+            ansatz, basis_gates=["cx", "rz", "sx", "x"], optimization_level=1, seed_transpiler=seed
+        )
+        rows.append(
+            {
+                "n": n,
+                "k": n // 2,
+                "all_bitstrings": 2**n,
+                "feasible": comb(n, n // 2),
+                "two_qubit_gates": int(tc.count_ops().get("cx", 0)),
+                "depth": tc.depth(),
+            }
+        )
+    return rows
