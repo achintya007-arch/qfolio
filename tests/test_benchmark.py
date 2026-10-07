@@ -11,6 +11,7 @@ from qportfolio.benchmark import (
     random_baseline,
     robustness_specs,
     run_instance,
+    solve_live,
     summarise,
 )
 from qportfolio.data import synthetic_instance
@@ -67,3 +68,12 @@ def test_summarise_mean_std(tiny_instance):
     assert s["brute_force"]["top1_is_optimal_share"] == 1.0
     assert s["random"]["top1_is_optimal_share"] is None
     assert 0 <= gap_stats([tiny_instance])["relative_gap_min"] <= 1
+
+
+def test_solve_live_shape():
+    mu, sigma = synthetic_instance(4, seed=2)
+    settings = {"restarts": 1, "maxiter": 10, "shots": 64}
+    out = solve_live(mu, sigma, ("A", "B", "C", "D"), 2, 0.5, 1, settings, seed=0)
+    assert out["methods"]["xy_qaoa_p1"]["p_feasible"] == pytest.approx(1.0)
+    assert sum(out["counts"]["xy_qaoa_p1"].values()) == 64
+    assert len(out["baskets"]) == comb(4, 2)

@@ -41,7 +41,9 @@ URL: `https://achintya007-arch.github.io/qfolio/`
 - Entry point: `app/streamlit_app.py`; dependencies come from root `requirements.txt` (Streamlit Cloud reads it automatically).
 - Deploy: **share.streamlit.io → New app → repo `achintya007-arch/qfolio`, branch `main`, file `app/streamlit_app.py`** → custom subdomain `qfolio` (if taken, pick another and update the README badge).
 - It auto-redeploys on every push to `main`.
-- Runtime budget: statevector XY-QAOA with n ≤ 6 and p ≤ 2, 4 restarts, cached with `@st.cache_data`. Precomputed `results/` are shown for the noise and hardware tabs.
+- Runtime budget: statevector XY-QAOA with n ≤ 6 and p ≤ 2, 4 restarts, cached with `@st.cache_data`.
+  The solve runs in a one-worker spawn process pool (`benchmark.solve_live`): on Windows, running
+  `StatevectorEstimator` inside Streamlit's script thread crashed the server natively (2026-10-08). Precomputed `results/` are shown for the noise and hardware tabs.
 - App tabs: **① Build basket** (tickers, k, q → brute-force vs XY-QAOA, distribution plot, risk/return frontier) · **② Why XY beats penalty** · **③ Noise & hardware** (ladder figure, job ID link) · **④ Limits**.
 
 Fallback if Streamlit Cloud is slow or down: Hugging Face Spaces (Docker SDK) with the same `requirements.txt`. The Pages report is the primary deployment.

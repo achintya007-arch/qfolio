@@ -201,3 +201,35 @@ def scaling_rows(ns: tuple[int, ...] = (4, 6, 8, 10, 12, 14), seed: int = 0) -> 
             }
         )
     return rows
+
+
+def solve_live(
+    mu: np.ndarray,
+    sigma: np.ndarray,
+    labels: tuple[str, ...],
+    k: int,
+    q: float,
+    reps: int,
+    settings: dict[str, Any],
+    seed: int,
+) -> dict[str, Any]:
+    """Brute force + one XY-QAOA depth on a user-chosen instance, as a viz-ready dict.
+
+    Used by the Streamlit app (tab 1). ``settings`` keys: restarts, maxiter, shots. The
+    result has the same shape as one ``benchmark.json`` instance, so ``viz`` can plot it.
+    """
+    p = PortfolioProblem(np.asarray(mu), np.asarray(sigma), k=k, q=q, labels=labels)
+    best, costs = brute_force(p)
+    ansatz, H = build_qaoa(p, reps=reps, variant="xy")
+    res = optimize(ansatz, H, settings["restarts"], settings["maxiter"], seed)
+    counts = sample(ansatz, res.params, shots=settings["shots"], seed=seed)
+    name = f"xy_qaoa_p{reps}"
+    return {
+        "n": p.n,
+        "k": k,
+        "q": q,
+        "optimum": {"bits": x_to_bitstring(best.x), "cost": best.cost},
+        "methods": {name: {**evaluate_counts(counts, p, costs, best.x), "seconds": res.seconds}},
+        "counts": {name: counts},
+        "baskets": basket_table(p, costs),
+    }

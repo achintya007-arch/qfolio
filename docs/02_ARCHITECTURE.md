@@ -97,6 +97,8 @@ def random_baseline(costs: np.ndarray) -> dict: ...                # analytic fl
 def run_instance(p, settings: dict, seed: int, keep_counts: bool = False) -> dict: ...
 def summarise(instances: list[dict]) -> dict: ...                  # mean ± std per method
 def gap_stats(instances: list[dict]) -> dict: ...                  # optimum vs runner-up gap
+def scaling_rows(ns=(4, 6, …, 14), seed=0) -> list[dict]: ...      # C(n,k), 2ⁿ, p=1 XY 2q gates
+def solve_live(mu, sigma, labels, k, q, reps, settings, seed) -> dict: ...  # Streamlit tab 1
 
 # noise.py
 def fake_backend(name: str = "FakeTorino"): ...
@@ -139,6 +141,7 @@ def summarise(p, pub_counts, meta) -> dict: ...          # raw / post-selected /
 | `scripts/make_figures.py` | all figures from `results/*.json` |
 | `scripts/fill_readme.py` | replaces the `⟨…⟩` README tables from JSON (between `<!-- RESULTS:START -->` markers) |
 | `scripts/build_report.sh` | executes the notebook → HTML → `site/` |
+| `scripts/build_landing.py` | writes `site/index.html` (results table from `results/*.json`) |
 
 ## Config (`configs/default.yaml`)
 ```yaml
