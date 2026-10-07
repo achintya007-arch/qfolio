@@ -1,0 +1,10 @@
+-r requirements.txt
+pytest>=8
+pytest-cov>=5
+nbmake>=1.5
+jupyterlab>=4
+nbconvert>=7
+ipykernel>=6
+ruff>=0.6
+pre-commit>=3.7
+detect-secrets>=1.5

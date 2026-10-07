@@ -1,0 +1,29 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+build/
+dist/
+.pytest_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Secrets — NEVER commit
+.env
+*.token
+qiskit-ibm.json
+
+# Generated site
+site/
+
+# OS / editors
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

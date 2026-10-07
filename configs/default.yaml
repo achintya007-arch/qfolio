@@ -1,0 +1,53 @@
+# Every experiment parameter lives here. Results JSON records this file's hash.
+seed: 2026
+
+data:
+  path: data/prices.csv
+  start: "2023-01-01"
+  end: "2025-12-31"
+  universe: [RELIANCE.NS, TCS.NS, HDFCBANK.NS, INFY.NS, ITC.NS, LT.NS,
+             SUNPHARMA.NS, BHARTIARTL.NS, MARUTI.NS, HINDUNILVR.NS]
+  tickers: [RELIANCE.NS, TCS.NS, HDFCBANK.NS, INFY.NS, ITC.NS, LT.NS]
+
+problem:            # headline instance
+  k: 3
+  q: 0.5            # risk aversion: 0.25 growth, 0.5 balanced, 1.0 conservative
+
+hardware_problem:   # shallow enough for current devices
+  tickers: [RELIANCE.NS, TCS.NS, HDFCBANK.NS, ITC.NS]
+  k: 2
+  q: 0.5
+
+qaoa:
+  reps: [1, 2, 3]
+  restarts: 8
+  maxiter: 300
+  shots: 8192
+
+benchmark:
+  instances: 24      # random 6-subsets × q_values
+  universe_size: 6
+  k: 3
+  q_values: [0.25, 0.5, 1.0]
+
+classical:
+  sa_sweeps: 2000
+  sa_reads: 100
+
+noise:
+  backends: [FakeTorino, FakeBrisbane]
+  opt_levels: [0, 1, 2, 3]
+  reps: [1, 2]
+
+hardware:
+  backend: null      # null = least busy
+  shots: 8192
+  reps: [1, 2]
+  dynamical_decoupling: true
+  twirling: true
+
+fast_mode:           # used when QFOLIO_FAST=1 (CI, notebook smoke test)
+  instances: 4
+  restarts: 2
+  maxiter: 80
+  shots: 1024

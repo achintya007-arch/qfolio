@@ -1,0 +1,40 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "qportfolio"
+version = "1.0.0"
+description = "Constraint-preserving QAOA for cardinality-constrained portfolio selection (Qiskit Fall Fest 2026)"
+readme = "README.md"
+license = { text = "MIT" }
+authors = [{ name = "Achintya Akella" }]
+requires-python = ">=3.11"
+dependencies = []  # managed in requirements.txt for Streamlit Cloud compatibility
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+extend-include = ["*.ipynb"]
+
+[tool.ruff.format]
+# Recent ruff versions also format Python blocks inside Markdown; the compact reference
+# snippets in docs/ are meant to be read, not reflowed.
+exclude = ["*.md"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP", "NPY", "SIM"]
+ignore = ["E741"]  # allow `l` for layer index, matching the maths
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q -m 'not slow'"
+markers = ["slow: takes > 5 s (QAOA optimisation)"]
+filterwarnings = ["ignore::DeprecationWarning"]
+
+[tool.coverage.run]
+source = ["src/qportfolio"]
+omit = ["src/qportfolio/hardware.py"]

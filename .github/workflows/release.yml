@@ -1,0 +1,25 @@
+name: release
+
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Bundle results
+        run: zip -r results-${{ github.ref_name }}.zip results/
+      - name: Create GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          assets="results-${{ github.ref_name }}.zip"
+          for f in docs/BUSINESS_BRIEF.pdf docs/slides.pdf; do [ -f "$f" ] && assets="$assets $f"; done
+          gh release create "${{ github.ref_name }}" $assets \
+            --title "Q-Folio ${{ github.ref_name }}" \
+            --notes-file CHANGELOG.md --verify-tag
