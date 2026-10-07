@@ -113,10 +113,11 @@ def save_figure(fig: Figure, name: str, outdir: str | Path = "results/figures") 
     outdir.mkdir(parents=True, exist_ok=True)
     png = outdir / f"{name}.png"
     fig.savefig(png, dpi=200, bbox_inches="tight", facecolor="white")
-    # Fixed metadata so re-running does not change the SVG bytes (no timestamp diff noise).
-    fig.savefig(
-        outdir / f"{name}.svg", bbox_inches="tight", facecolor="white", metadata={"Date": None}
-    )
+    # No date + fixed id salt, so re-running does not change the SVG bytes (no diff noise).
+    with plt.rc_context({"svg.hashsalt": "qfolio"}):
+        fig.savefig(
+            outdir / f"{name}.svg", bbox_inches="tight", facecolor="white", metadata={"Date": None}
+        )
     plt.close(fig)
     return png
 
@@ -375,10 +376,15 @@ def transpile(noisy: dict[str, Any]) -> Figure:
     styles = {"1": ("-", "o"), "2": ("--", "s"), "3": (":", "^")}
     with plt.rc_context({**STYLE, "axes.grid.axis": "both"}):
         fig, axes = plt.subplots(1, 3, figsize=(16, 5.2))
-        for (name, data), colour in zip(noisy["backends"].items(), (XY, PENALTY), strict=False):
+        backends = list(noisy["backends"].items())
+        for b, ((name, data), colour) in enumerate(zip(backends, (XY, PENALTY), strict=False)):
+            # Both devices are heavy-hex Heron chips, so gate counts often coincide: nudge each
+            # backend sideways and draw the first one hollow so neither line hides the other.
+            shift = (b - (len(backends) - 1) / 2) * 0.08
+            face = "white" if b == 0 else colour
             for reps, rows in data["transpile"].items():
                 ls, marker = styles.get(reps, ("-", "o"))
-                levels = [r["level"] for r in rows]
+                levels = np.array([r["level"] for r in rows]) + shift
                 for ax, (key, _) in zip(axes, panels, strict=True):
                     ax.plot(
                         levels,
@@ -386,6 +392,8 @@ def transpile(noisy: dict[str, Any]) -> Figure:
                         linestyle=ls,
                         marker=marker,
                         color=colour,
+                        markerfacecolor=face,
+                        markeredgewidth=2,
                         linewidth=2,
                         markersize=8,
                         label=f"{name}, p = {reps}",

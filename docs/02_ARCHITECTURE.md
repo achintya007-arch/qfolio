@@ -101,15 +101,18 @@ def gap_stats(instances: list[dict]) -> dict: ...                  # optimum vs 
 # noise.py
 def fake_backend(name: str = "FakeTorino"): ...
 def transpile_report(circ, backend, levels=(0, 1, 2, 3), seed: int = 0) -> pd.DataFrame: ...
-def run_noisy(circ, backend, shots: int, seed: int) -> dict[str, int]: ...
+def estimated_fidelity(tc, backend) -> float: ...                  # Π(1 − error) over gates + measures
+def run_noisy(circ, backend, shots: int, seed: int, level: int = 3) -> tuple[dict[str, int], list[int]]: ...  # (counts, layout)
 def postselect(counts, k: int) -> dict[str, int]: ...
 def readout_calibration(backend, layout, shots, seed) -> list[np.ndarray]: ...   # per-qubit 2×2
 def readout_mitigate(counts, cal_mats) -> dict[str, float]: ...  # tensored inverse, clipped & renormalised
+# noise.py reuses hardware.py's calibration_circuits / readout_matrices / readout_mitigate, so the
+# simulated study and the real IBM job are mitigated by identical code.
 
 # hardware.py  (one job = all QAOA depths + 2 readout-calibration PUBs; see docs/06)
 # NOTE (2026-10-08): replaces submit()/collect(). Submit/status/collect orchestration lives in
 # scripts/run_hardware.py (I/O); this module holds the pure / backend-facing pieces.
-# readout_matrices / readout_mitigate live here until P4 builds noise.py.
+# readout_matrices / readout_mitigate live here and are re-used by noise.py.
 def get_backend(name: str | None, dry_run: bool, min_qubits: int = 8) -> BackendV2: ...  # FakeTorino if dry_run
 def fetch_job(job_id: str) -> RuntimeJobV2: ...
 def cost_gap(p: PortfolioProblem) -> dict: ...          # best / second-best basket and their gap
@@ -147,7 +150,7 @@ hardware_problem: {tickers: [RELIANCE.NS, TCS.NS, HDFCBANK.NS, ITC.NS], k: 2, q:
 qaoa: {reps: [1, 2, 3], restarts: 8, maxiter: 300, shots: 8192}
 benchmark: {instances: 20, universe_size: 6, k: 3, q_values: [0.25, 0.5, 1.0]}
 classical: {sa_sweeps: 2000}
-noise: {backends: [FakeTorino, FakeBrisbane], opt_levels: [0, 1, 2, 3]}
+noise: {backends: [FakeTorino, FakeFez], opt_levels: [0, 1, 2, 3]}
 hardware: {backend: null, shots: 8192, dynamical_decoupling: true, twirling: true}
 ```
 

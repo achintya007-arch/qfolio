@@ -84,7 +84,7 @@ def readout_matrices(counts0: dict[str, int], counts1: dict[str, int], n: int) -
 
     Column 0 comes from the all-0 run and column 1 from the all-1 run, using the marginal of
     each qubit. Assumes independent (uncorrelated) readout errors: the tensored model.
-    NOTE(achintya): lives here, not in noise.py, because P4 (noise.py) is not built yet.
+    Shared with noise.py, so simulated and real runs are mitigated by the same code.
     """
     mats = []
     for i in range(n):

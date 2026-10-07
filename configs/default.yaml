@@ -35,7 +35,7 @@ classical:
   sa_reads: 100
 
 noise:
-  backends: [FakeTorino, FakeBrisbane]
+  backends: [FakeTorino, FakeFez]   # IBM Heron r1 and r2 (CZ), like ibm_kingston
   opt_levels: [0, 1, 2, 3]
   reps: [1, 2]
 

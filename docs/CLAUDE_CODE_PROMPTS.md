@@ -61,7 +61,7 @@ restarts) so CI stays under 5 minutes. Add `make reproduce`. Commit.
 ```
 Implement noise.py and scripts/run_noisy.py per docs/03 §6 and docs/04 (noisy snippets):
 hardware instance (4 assets, k=2), XY-QAOA p=1 and p=2 with simulator-trained params, on FakeTorino and
-FakeBrisbane: transpile report for levels 0-3 (depth, 2q count, estimated fidelity), then raw → post-selected
+FakeFez: transpile report for levels 0-3 (depth, 2q count, estimated fidelity), then raw → post-selected
 → post-selected + readout-mitigated metrics. Save results/noisy.json and figures 4 and 5. Add tests from docs/08
 for noise.py. Commit.
 ```
