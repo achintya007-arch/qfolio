@@ -49,7 +49,9 @@ Commit "feat: XY-QAOA with Dicke init; checkpoint demo".
 ```
 Implement scripts/run_benchmark.py per docs/05_BENCHMARK_PROTOCOL.md: headline real-data instance plus 20+
 robustness instances, methods = random (analytic), brute force, greedy, simulated annealing, penalty-QAOA
-p=1,2, XY-QAOA p=1,2,3. Save results/benchmark.json using the schema in docs/02. Then implement viz.py and
+p=1,2, XY-QAOA p=1,2,3. Headline metrics: P(optimal), approximation ratio and P(top-2 baskets), side by
+side (add `p_top2` to metrics.evaluate_counts + test). Save results/benchmark.json using the schema in docs/02.
+Then implement viz.py and
 scripts/make_figures.py for figures 1, 2, 3, 6 and 7 from docs/05 §7 (PNG + SVG, readable at slide size,
 colour-blind-safe palette, every axis labelled with units). Respect QFOLIO_FAST=1 (fewer instances and
 restarts) so CI stays under 5 minutes. Add `make reproduce`. Commit.

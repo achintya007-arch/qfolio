@@ -51,8 +51,10 @@ Continuous weights, transaction costs, short selling, sector/lot constraints, mo
 - [ ] AC7: Every table in the README is generated from `results/*.json`.
 - [ ] AC8: CI is green on `main`; the Pages report is live; the release `v1.0.0` exists.
 
-## 6. Expected outcomes (from pre-build validation on synthetic data, n=6, k=3)
-These ranges come from a validation run done while writing the docs. They **set expectations only**; the README reports the real runs.
+## 6. Expected outcomes (from pre-build validation on synthetic data, n=6, k=3): superseded
+**From a different pre-build generator, not reproducible here; superseded by `results/`.**
+These ranges come from a validation run done while writing the docs, with a synthetic generator that is not the repo's
+`data.synthetic_instance`. They were expectations only; the README and slides quote `results/*.json`.
 
 | Variant | P(feasible) | P(optimal) | Random P(opt) |
 |---|---|---|---|

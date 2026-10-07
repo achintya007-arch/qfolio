@@ -8,9 +8,9 @@ All times IST. Each phase has a matching copy-paste prompt in [CLAUDE_CODE_PROMP
 |---|---|---|---|
 | **Wed 7 Oct** 17:00–17:30 | **P0 Bootstrap** | Public repo, docs pushed, CI skeleton green | Badge on README is green |
 | 17:30–19:00 | **P1 Problem + classical** | `data.py`, `problem.py`, `classical.py`, cached `data/prices.csv`, tests | QUBO energy == objective for all 2ⁿ bitstrings (test) |
-| 19:00–20:30 | **P2 Circuits + QAOA** ✅ *checkpoint artefact* | `circuits.py`, `qaoa.py`, `metrics.py`, tests | XY-QAOA finds the brute-force optimum as its top sample |
+| 19:00–20:30 | **P2 Circuits + QAOA** ✅ *checkpoint artefact* | `circuits.py`, `qaoa.py`, `metrics.py`, tests | XY-QAOA P(feasible) = 1 and P(optimal) > random (AC5, restated) |
 | 20:30–21:00 | Dinner | | |
-| 21:00–22:30 | **P3 Benchmark** | `scripts/run_benchmark.py`, `results/benchmark.json`, headline figures | Multi-instance table + `headline.png` |
+| 21:00–22:30 | **P3 Benchmark** | `scripts/run_benchmark.py`, `results/benchmark.json`, headline figures | Multi-instance table with P(optimal), approx. ratio, P(top-2) + `headline.png` |
 | 22:30–23:30 | **P4 Noise-aware** | `noise.py`, `scripts/run_noisy.py`, transpile/mitigation comparison | Raw vs post-selected vs mitigated on ≥ 1 fake backend |
 | **23:30** | **P7a Submit hardware job** ⚡ | `scripts/run_hardware.py --submit` | Job ID saved in `results/hardware/` (the queue runs overnight) |
 | 23:30–00:15 | Commit, push, sleep | | CI green |

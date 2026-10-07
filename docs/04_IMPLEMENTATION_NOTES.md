@@ -19,7 +19,9 @@ reference into the modules listed in `02_ARCHITECTURE.md` instead of re-deriving
 | 9 | `yfinance` blocked behind proxies / in CI | Empty DataFrame | Fetch once locally, commit `data/prices.csv`; CI never touches the network |
 | 10 | IBM channel name | `ibm_quantum` channel was retired with the classic platform | Use `channel="ibm_quantum_platform"` |
 
-## Validation numbers (synthetic instance, seed 7, n = 6, k = 3, 8192 shots)
+## Validation numbers (synthetic instance, seed 7, n = 6, k = 3, 8192 shots): superseded
+
+> **From a different pre-build generator, not reproducible here; superseded by `results/`.**
 
 | Variant | p | P(feasible) | P(optimal) | Approx. ratio | Top-1 optimal | Random P(opt) |
 |---|---|---|---|---|---|---|
@@ -28,11 +30,11 @@ reference into the modules listed in `02_ARCHITECTURE.md` instead of re-deriving
 | **XY + Dicke** | 1 | **1.000** | **0.215** | 0.70 | **yes** | 0.05 |
 | **XY + Dicke** | 2 | **1.000** | **0.318** | **0.84** | **yes** | 0.05 |
 
-> NOTE (2026-10-08): these numbers came from the pre-build validation script. The repo's
-> `data.synthetic_instance(6, seed=7)` is a different generator: there XY p=1 gives P(opt) = 0.081 and
-> its top-1 is not optimal. Treat this table as expectations only (as `01_SPEC.md` §6 says).
+> NOTE (2026-10-08): the repo's `data.synthetic_instance(6, seed=7)` is not the generator used here:
+> with it, XY p=1 gives P(opt) = 0.081 and its top-1 is not optimal. Quote only numbers from `results/`.
 
-Noisy check (n = 4, k = 2, p = 1, random P(opt) = 0.167): ideal 0.656 → FakeTorino raw 0.499 → post-selected 0.603 (P(feasible) raw 0.83).
+Noisy check (same pre-build generator, not reproducible here; superseded by `results/`)
+(n = 4, k = 2, p = 1, random P(opt) = 0.167): ideal 0.656 → FakeTorino raw 0.499 → post-selected 0.603 (P(feasible) raw 0.83).
 
 ## Reference implementation
 

@@ -47,6 +47,7 @@ The coefficients are normalised by max|Q| so the optimiser sees angles of order 
 | P(opt \| post-selected) | P(optimal) among feasible shots | the symmetry-verified number |
 | Approximation ratio | (C_max − E[C \| feasible]) / (C_max − C_min) | 1 = always optimal, 0 = always worst; random ≈ 0.5 |
 | Top-1 is optimal | most frequent feasible bitstring == optimum | what a user would actually pick |
+| P(top-2 baskets) | share of shots on the two lowest-cost feasible baskets | robust to near-ties: the real instance's best two differ by only 0.004 in cost |
 | Wall time / evaluations | timing for all methods | honesty about cost |
 
 ## 6. Noise-aware engineering
