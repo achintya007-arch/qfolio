@@ -32,11 +32,14 @@ def test_module_imports(name):
     importlib.import_module(f"qportfolio.{name}")
 
 
-def test_demo_runs(capsys):
+def test_demo_runs(capsys, monkeypatch):
     from qportfolio.demo import main
 
+    monkeypatch.setenv("QFOLIO_FAST", "1")  # fewer restarts / shots, keeps `make test` fast
     main()
-    assert "checkpoint" in capsys.readouterr().out
+    out = capsys.readouterr().out
+    assert "method | P(feasible) | P(optimal) | top-1 basket | brute-force optimum" in out
+    assert "xy-QAOA p=1 | 1.000 |" in out
 
 
 # NOTE(achintya): CI runs `pytest -m slow`, which exits with code 5 ("no tests collected")

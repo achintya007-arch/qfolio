@@ -81,7 +81,8 @@ def build_qaoa(p: PortfolioProblem, reps: int, variant: Literal["penalty", "xy"]
 @dataclass
 class QAOAResult: params: np.ndarray; energy: float; history: list[float]; nfev: int; seconds: float
 def optimize(ansatz, hamiltonian, restarts: int, maxiter: int, seed: int) -> QAOAResult: ...
-def sample(ansatz, params, sampler=None, shots: int = 4096) -> dict[str, int]: ...
+def sample(ansatz, params, sampler=None, shots: int = 4096,
+           seed: int | None = None) -> dict[str, int]: ...  # seed → default StatevectorSampler
 
 # metrics.py
 def evaluate_counts(counts: dict[str, int], p: PortfolioProblem,

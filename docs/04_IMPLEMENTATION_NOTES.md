@@ -28,6 +28,10 @@ reference into the modules listed in `02_ARCHITECTURE.md` instead of re-deriving
 | **XY + Dicke** | 1 | **1.000** | **0.215** | 0.70 | **yes** | 0.05 |
 | **XY + Dicke** | 2 | **1.000** | **0.318** | **0.84** | **yes** | 0.05 |
 
+> NOTE (2026-10-08): these numbers came from the pre-build validation script. The repo's
+> `data.synthetic_instance(6, seed=7)` is a different generator: there XY p=1 gives P(opt) = 0.081 and
+> its top-1 is not optimal. Treat this table as expectations only (as `01_SPEC.md` §6 says).
+
 Noisy check (n = 4, k = 2, p = 1, random P(opt) = 0.167): ideal 0.656 → FakeTorino raw 0.499 → post-selected 0.603 (P(feasible) raw 0.83).
 
 ## Reference implementation
