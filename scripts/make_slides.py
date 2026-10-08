@@ -38,6 +38,49 @@ AUTHOR = "Akella Ahlad Achintya"
 STREAMLIT_URL: str | None = "https://qfolio.streamlit.app"
 
 
+# Speaker notes, word for word as Achintya will say them (title, problem, idea, hardware).
+NOTES = [
+    (
+        "Hi, I'm Akella Ahlad Achintya. My project is Q-Folio: using QAOA on Qiskit to "
+        "pick the best stock basket — and I ran it on a real IBM quantum computer. One "
+        "line: standard QAOA treats 'pick exactly k stocks' as a penalty and ends up no "
+        "better than chance; I built that rule into the circuit, so every answer is a "
+        "valid portfolio."
+    ),
+    (
+        "Robo-advisors sell model baskets — say, the best 3 out of 6 stocks. 'Best' means"
+        " high return and low risk. Each dot on this chart is one possible basket; there "
+        "are 20 here. That's easy, but the number of baskets explodes as you add stocks —"
+        " that's why it's a hard optimisation problem. I used real NSE prices from 2023 "
+        "to 2025. Each stock is one qubit: 1 means hold it, 0 means don't. Two knobs: k "
+        "is the basket size, and q is risk aversion — higher q means a more conservative "
+        "client."
+    ),
+    (
+        "The textbook way adds a penalty for picking the wrong number of stocks. It "
+        "searches all 64 combinations, 44 of which are invalid — and I found it does no "
+        "better than random guessing. So I changed the circuit. A Dicke state starts in "
+        "an equal mix of only the valid baskets, and an XY mixer swaps one stock in and "
+        "one out, so the count never changes. Result: 100% of answers are valid baskets, "
+        "and the best basket shows up 34% of the time versus 5% for random — about seven "
+        "times better, and comparable to simulated annealing. Tested on 25 different "
+        "instances."
+    ),
+    (
+        "Then I ran it on IBM's ibm_kingston quantum computer. This histogram is straight"
+        " from IBM's dashboard: the tallest bar, 1001, is the optimal basket — Reliance "
+        "plus ITC — and the second is the runner-up. Noise lets some invalid answers "
+        "through, but my circuit can never produce those, so I can safely throw them "
+        "away. That took us from 51% to 65% correct, versus 17% for random. To be honest "
+        "about limits: at this size a laptop solves it instantly with brute force, so I'm"
+        " not claiming quantum advantage. The contribution is showing that building "
+        "constraints into the circuit is what makes quantum optimisation work — and it "
+        "even gives free error detection on hardware. The code, live demo and report are "
+        "at these QR codes. Thank you."
+    ),
+]
+
+
 def load_numbers() -> dict:
     """Pull the handful of numbers the slides quote from the results JSON."""
     bench = json.loads((ROOT / "results" / "benchmark.json").read_text(encoding="utf-8"))
@@ -134,14 +177,7 @@ def build(n: dict, tmp: str) -> Presentation:
         size=24,
     )
     add_text(s0, 0.8, 5.3, 11.7, 0.5, [f"Real results on IBM Quantum {n['backend']}"], color=BLUE)
-    set_notes(
-        s0,
-        "Standard QAOA treats 'pick exactly k stocks' as a penalty and ends up no better than "
-        "random guessing, so I built the constraint into the circuit: every shot is a valid "
-        f"portfolio, it finds the optimal basket about {n['xy'] / n['rand']:.0f}× more often than "
-        "chance, and the same symmetry lets me throw out hardware errors for free on a real IBM "
-        "quantum computer.",
-    )
+    set_notes(s0, NOTES[0])
 
     # Slide 1: the problem.
     s1 = prs.slides.add_slide(blank)
@@ -164,17 +200,7 @@ def build(n: dict, tmp: str) -> Presentation:
         ],
     )
     add_text(s1, 9.2, 6.2, 3.9, 1.0, [AUTHOR, "Qiskit Fall Fest 2026 · Track I2"], color=PURPLE)
-    set_notes(
-        s1,
-        f"Hi, I'm {AUTHOR}. "
-        "Robo-advisors in India sell model baskets: a few stocks, equal weights, for a given "
-        "risk profile. Choosing which k stocks go in is a combinatorial problem. Here I pick 3 "
-        "of 6 NSE large caps, which is 20 possible baskets; each dot on this chart is one of "
-        "them. We want return up and risk down, and the client's risk aversion q sets the "
-        "trade-off. The blue star is the best basket for q = 0.5, and the orange diamond is a "
-        "very close runner-up. At 20 baskets a laptop checks them all instantly, but the count "
-        "explodes as C(n,k), so it is a natural test bed for quantum optimisation.",
-    )
+    set_notes(s1, NOTES[1])
 
     # Slide 2: the idea and the result.
     s2 = prs.slides.add_slide(blank)
@@ -213,17 +239,7 @@ def build(n: dict, tmp: str) -> Presentation:
         color=PURPLE,
         bold=True,
     )
-    set_notes(
-        s2,
-        "The textbook way to say 'exactly 3 stocks' is a penalty term in the cost. I tested it "
-        f"carefully: only {n['pen_valid']:.0%} of its samples are valid baskets, and it finds the "
-        f"best one {n['pen']:.0%} of the time, the same as random guessing at {n['rand']:.0%}. "
-        "So I moved the constraint into the circuit. A Dicke state starts in an equal mix of only "
-        "the valid baskets, and an XY mixer swaps stocks in and out without changing the count. "
-        f"Every shot is a real portfolio. Over {n['n_inst']} test instances the best basket comes "
-        f"up {n['xy']:.0%} of the time, about the same as simulated annealing at {n['sa']:.0%}. "
-        "Grey bars are classical baselines, blue is ours, orange is the penalty approach.",
-    )
+    set_notes(s2, NOTES[2])
 
     # Slide 3: real hardware and honesty.
     s3 = prs.slides.add_slide(blank)
@@ -255,19 +271,7 @@ def build(n: dict, tmp: str) -> Presentation:
     qrs = [(REPO_URL, "Repo")] + ([(STREAMLIT_URL, "Live demo")] if STREAMLIT_URL else [])
     for i, (url, label) in enumerate(qrs):
         add_qr(s3, url, label, 11.7 - 1.65 * i, 5.25, 1.3, tmp)
-    set_notes(
-        s3,
-        f"Then I ran the same circuit on IBM's {n['backend']}, with 4 stocks and 2 picked. "
-        "On the left is the raw output from the IBM dashboard: the tallest bar is the optimal "
-        "basket and the second is the runner-up. Noise lets some invalid baskets through, "
-        f"about {1 - n['hw_valid']:.0%} of shots. The ideal circuit can never produce them, so I "
-        "simply throw them away. That is free error detection. The optimal basket goes from "
-        f"{n['hw_raw']:.0%} to {n['hw_ps']:.0%}, against {n['hw_rand']:.0%} for a random guess. "
-        "Honest limits: at this size a laptop solves it instantly, so I claim no quantum "
-        "advantage. The point is that building business constraints into the circuit is what "
-        "makes quantum optimisation work at all. Code and live demo are behind the QR codes. "
-        f"Thank you, I'm {AUTHOR}.",
-    )
+    set_notes(s3, NOTES[3])
     return prs
 
 

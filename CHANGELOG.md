@@ -3,6 +3,10 @@ All notable changes are documented here. Format: [Keep a Changelog](https://keep
 
 ## [Unreleased]
 
+## [1.0.1] - 2026-10-08
+### Changed
+- Slide deck speaker notes replaced with the final talk script (title, problem, idea, hardware).
+
 ## [1.0.0] - 2026-10-08
 First submitted version (Qiskit Fall Fest 2026, Track I2).
 
