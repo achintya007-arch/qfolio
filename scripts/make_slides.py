@@ -32,6 +32,7 @@ BLUE = RGBColor(0x2A, 0x78, 0xD6)
 ORANGE = RGBColor(0xE8, 0x67, 0x38)
 MIN_PT = 20  # smallest font on any slide, so it is readable from the back of the room
 REPO_URL = "https://github.com/achintya007-arch/qfolio"
+AUTHOR = "Akella Ahlad Achintya"
 # NOTE(achintya): set once the Streamlit app is deployed; while None, slide 3 shows only
 # the repo QR code.
 STREAMLIT_URL: str | None = "https://qfolio.streamlit.app"
@@ -130,8 +131,10 @@ def build(n: dict, tmp: str) -> Presentation:
             "Goal: find the best basket for a client's risk aversion q.",
         ],
     )
+    add_text(s1, 9.2, 6.2, 3.9, 1.0, [AUTHOR, "Qiskit Fall Fest 2026 · Track I2"], color=PURPLE)
     set_notes(
         s1,
+        f"Hi, I'm {AUTHOR}. "
         "Robo-advisors in India sell model baskets: a few stocks, equal weights, for a given "
         "risk profile. Choosing which k stocks go in is a combinatorial problem. Here I pick 3 "
         "of 6 NSE large caps, which is 20 possible baskets; each dot on this chart is one of "
@@ -230,7 +233,8 @@ def build(n: dict, tmp: str) -> Presentation:
         f"{n['hw_raw']:.0%} to {n['hw_ps']:.0%}, against {n['hw_rand']:.0%} for a random guess. "
         "Honest limits: at this size a laptop solves it instantly, so I claim no quantum "
         "advantage. The point is that building business constraints into the circuit is what "
-        "makes quantum optimisation work at all. Code and live demo are behind the QR codes.",
+        "makes quantum optimisation work at all. Code and live demo are behind the QR codes. "
+        f"Thank you, I'm {AUTHOR}.",
     )
     return prs
 

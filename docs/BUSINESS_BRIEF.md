@@ -1,5 +1,5 @@
 # Q-Folio: one-page business brief
-*Qiskit Fall Fest 2026 · Track I2 · Achintya Akella*
+*Qiskit Fall Fest 2026 · Track I2 · Akella Ahlad Achintya*
 
 **Customer.** Indian wealth-tech and robo-advisory platforms that sell curated, equal-weight "model baskets" (themed portfolios of a few stocks) to retail investors. Each platform maintains hundreds of baskets across risk profiles and rebalances them periodically.
 

@@ -55,7 +55,7 @@ PAGE = """<!doctype html>
 </head>
 <body><main>
 <h1>Q-Folio: constraint-preserving QAOA for portfolio selection</h1>
-<p class="sub">Qiskit Fall Fest 2026 · Industry Track I2 · Achintya Akella</p>
+<p class="sub">Qiskit Fall Fest 2026 · Industry Track I2 · Akella Ahlad Achintya</p>
 <nav><a href="qfolio.html">Executed notebook</a><a href="{repo}">Repository</a>
 <a href="{streamlit}">Live demo (Streamlit)</a></nav>
 <p>Pick exactly k of n NSE stocks for an equal-weight basket. XY-QAOA (Dicke start + XY-ring mixer)

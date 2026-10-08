@@ -8,7 +8,7 @@ version = "1.0.0"
 description = "Constraint-preserving QAOA for cardinality-constrained portfolio selection (Qiskit Fall Fest 2026)"
 readme = "README.md"
 license = { text = "MIT" }
-authors = [{ name = "Achintya Akella" }]
+authors = [{ name = "Akella Ahlad Achintya" }]
 requires-python = ">=3.11"
 dependencies = []  # managed in requirements.txt for Streamlit Cloud compatibility
 

@@ -134,7 +134,7 @@ qfolio/
 
 ## Author
 
-**Achintya Akella**, B.Tech CSE, GITAM University, Bengaluru · [GitHub](https://github.com/achintya007-arch) · [LinkedIn](https://linkedin.com/in/achintya-akella-994477291)
+**Akella Ahlad Achintya**, B.Tech CSE, GITAM University, Bengaluru · [GitHub](https://github.com/achintya007-arch) · [LinkedIn](https://linkedin.com/in/achintya-akella-994477291)
 
 Built during Qiskit Fall Fest 2026 at GITAM (School of Sciences × School of CSE × IBM Quantum). All code was written after the challenge announcement on 7 Oct 2026, 14:00 IST. See the commit history.
 
