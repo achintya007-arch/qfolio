@@ -13,6 +13,7 @@ from qportfolio.benchmark import METHODS
 from qportfolio.io import load_result
 
 REPO = "https://github.com/achintya007-arch/qfolio"
+STREAMLIT = "https://qfolio.streamlit.app"
 NAMES = {
     "random": "Random basket (analytic)",
     "brute_force": "Brute force",
@@ -55,7 +56,8 @@ PAGE = """<!doctype html>
 <body><main>
 <h1>Q-Folio: constraint-preserving QAOA for portfolio selection</h1>
 <p class="sub">Qiskit Fall Fest 2026 · Industry Track I2 · Achintya Akella</p>
-<nav><a href="qfolio.html">Executed notebook</a><a href="{repo}">Repository</a></nav>
+<nav><a href="qfolio.html">Executed notebook</a><a href="{repo}">Repository</a>
+<a href="{streamlit}">Live demo (Streamlit)</a></nav>
 <p>Pick exactly k of n NSE stocks for an equal-weight basket. XY-QAOA (Dicke start + XY-ring mixer)
 keeps every sample a valid basket; we compare it with brute force, greedy, simulated annealing and
 penalty-QAOA on the same objective, then run it on IBM hardware.</p>
@@ -106,6 +108,7 @@ def main() -> None:
         )
     page = PAGE.format(
         repo=REPO,
+        streamlit=STREAMLIT,
         n_inst=s["brute_force"]["instances"],
         rows="\n".join(rows),
         hardware=hardware,

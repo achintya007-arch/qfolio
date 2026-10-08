@@ -69,7 +69,7 @@
 
 Wall time includes classical parameter optimisation on a statevector simulator (8 restarts). It is not a hardware speed measurement.
 
-Full interactive report: **https://achintya007-arch.github.io/qfolio/** · Live demo: ⟨Streamlit URL⟩
+Full interactive report: **https://achintya007-arch.github.io/qfolio/** · Live demo: **https://qfolio.streamlit.app**
 <!-- RESULTS:END -->
 
 <p align="center"><img src="results/figures/headline.png" width="720" alt="P(optimal) by method"></p>

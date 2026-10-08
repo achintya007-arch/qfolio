@@ -34,7 +34,7 @@ MIN_PT = 20  # smallest font on any slide, so it is readable from the back of th
 REPO_URL = "https://github.com/achintya007-arch/qfolio"
 # NOTE(achintya): set once the Streamlit app is deployed; while None, slide 3 shows only
 # the repo QR code.
-STREAMLIT_URL: str | None = None
+STREAMLIT_URL: str | None = "https://qfolio.streamlit.app"
 
 
 def load_numbers() -> dict:

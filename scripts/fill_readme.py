@@ -15,6 +15,7 @@ ROOT = Path(__file__).resolve().parents[1]
 README = ROOT / "README.md"
 HW_JOB = "db3b1bimb58s7387e0jg"
 PAGES_URL = "https://achintya007-arch.github.io/qfolio/"
+STREAMLIT_URL = "https://qfolio.streamlit.app"
 # IBM Quantum dashboard screenshots committed next to the job JSON.
 SCREENSHOTS = " · ".join(
     f"[{label}](results/hardware/ibm_{name}.png)"
@@ -136,7 +137,7 @@ def render(bench: dict, noisy: dict, hw: dict) -> str:
         "Wall time includes classical parameter optimisation on a statevector simulator "
         "(8 restarts). It is not a hardware speed measurement.",
         "",
-        f"Full interactive report: **{PAGES_URL}** · Live demo: ⟨Streamlit URL⟩",
+        f"Full interactive report: **{PAGES_URL}** · Live demo: **{STREAMLIT_URL}**",
     ]
     return "\n".join(parts)
 

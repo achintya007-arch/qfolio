@@ -22,6 +22,6 @@
 
 **Why it still matters / next steps.** The project shows that **encoding business constraints directly in the circuit** is necessary for quantum optimisation to work at all, and that it also gives built-in error detection. Next steps: sector and turnover constraints as further symmetries, parameter transfer across baskets, and benchmarking against commercial MIQP solvers as hardware matures.
 
-**Links:** [Repo](https://github.com/achintya007-arch/qfolio) · [Report](https://achintya007-arch.github.io/qfolio/) · Live demo ⟨Streamlit URL⟩ · Video ⟨YouTube URL⟩
+**Links:** [Repo](https://github.com/achintya007-arch/qfolio) · [Report](https://achintya007-arch.github.io/qfolio/) · [Live demo](https://qfolio.streamlit.app) · Video ⟨YouTube URL⟩
 
 <sub>Public market data only. Not investment advice. All numbers from `results/benchmark.json` and `results/hardware/db3b1bimb58s7387e0jg.json`.</sub>
