@@ -17,6 +17,11 @@ ROOT = Path(__file__).resolve().parents[1]
 FIG = ROOT / "results" / "figures"
 OUT = ROOT / "docs" / "slides.pptx"
 HW_JOB = "db3b1bimb58s7387e0jg"
+HW_HIST = ROOT / "results" / "hardware" / "ibm_job_histogram.png"
+HIST_CAPTION = (
+    "Real ibm_kingston output — tallest bar 1001 = optimal basket (RELIANCE+ITC), "
+    "second 1100 = runner-up"
+)
 
 PURPLE = RGBColor(0x3B, 0x1F, 0x7A)
 GREY = RGBColor(0x44, 0x44, 0x44)
@@ -155,15 +160,18 @@ def build(n: dict) -> Presentation:
         f"P(optimal) {n['hw_raw']:.2f} raw → {n['hw_ps']:.2f} post-selected "
         f"vs {n['hw_rand']:.2f} random · job {HW_JOB}",
     )
+    # Left: simulated + real noise ladder. Right: the raw IBM dashboard histogram as evidence.
     s3.shapes.add_picture(
-        str(FIG / "noise_ladder.png"), Inches(0.5), Inches(1.75), width=Inches(8.4)
+        str(FIG / "noise_ladder.png"), Inches(0.4), Inches(1.7), width=Inches(6.4)
     )
+    s3.shapes.add_picture(str(HW_HIST), Inches(6.95), Inches(1.75), width=Inches(6.0))
+    add_text(s3, 6.95, 4.4, 6.0, 0.8, [HIST_CAPTION], size=14, color=PURPLE)
     add_text(
         s3,
-        9.2,
-        1.9,
-        3.9,
-        4.2,
+        0.5,
+        5.2,
+        8.6,
+        2.0,
         [
             "• Symmetry post-selection = free error detection",
             "• Classical brute force is still faster at this size: no quantum advantage claimed",
@@ -171,7 +179,7 @@ def build(n: dict) -> Presentation:
         ],
         size=20,
     )
-    add_text(s3, 9.2, 6.0, 3.9, 1.2, [f"Repo: {REPO}", f"Report: {REPORT}"], size=14, color=PURPLE)
+    add_text(s3, 9.3, 6.2, 3.8, 1.0, [f"Repo: {REPO}", f"Report: {REPORT}"], size=14, color=PURPLE)
     return prs
 
 

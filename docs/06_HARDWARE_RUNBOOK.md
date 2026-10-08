@@ -47,7 +47,10 @@ python scripts/make_figures.py                     # noise_ladder.png gets the h
 
 ## 3. Evidence to commit (judges can verify it)
 `results/hardware/<job_id>.json` contains: job ID, backend name, timestamps, physical qubit layout, transpiled depth and 2q count, raw counts for every PUB, the calibration matrices, the metrics (raw / post-selected / mitigated), and the backend properties snapshot (median T1/T2, readout error and 2q error on the used qubits).
-Also commit a screenshot of the job page from the IBM dashboard: `results/hardware/job_screenshot.png`.
+Also commit screenshots of the job from the IBM Quantum dashboard. For job `db3b1bimb58s7387e0jg` on `ibm_kingston`:
+- [`ibm_workloads.png`](../results/hardware/ibm_workloads.png): the Workloads list (completed job plus the earlier failed submission `db3attimb58s7387dsd0`)
+- [`ibm_job_details.png`](../results/hardware/ibm_job_details.png): the job page (backend, 4 PUBs, 8192 shots, dynamical decoupling + twirling, 11 s QPU usage)
+- [`ibm_job_histogram.png`](../results/hardware/ibm_job_histogram.png): measured counts for PUB 1 (XY-QAOA p = 1). The tallest bar, 1001, is the optimal basket (RELIANCE+ITC), and the second, 1100, is the runner-up
 
 ## 4. If things go wrong
 | Problem | Action |

@@ -15,6 +15,15 @@ ROOT = Path(__file__).resolve().parents[1]
 README = ROOT / "README.md"
 HW_JOB = "db3b1bimb58s7387e0jg"
 PAGES_URL = "https://achintya007-arch.github.io/qfolio/"
+# IBM Quantum dashboard screenshots committed next to the job JSON.
+SCREENSHOTS = " · ".join(
+    f"[{label}](results/hardware/ibm_{name}.png)"
+    for label, name in [
+        ("workloads", "workloads"),
+        ("job", "job_details"),
+        ("histogram", "job_histogram"),
+    ]
+)
 START, END = "<!-- RESULTS:START -->", "<!-- RESULTS:END -->"
 
 # (key in benchmark.json, label shown in the README)
@@ -110,7 +119,7 @@ def noise_table(noisy: dict, hw: dict) -> list[str]:
         f"| **`{hw['backend']}` (real hardware): raw → post-selected** "
         f"| **{r['raw']['p_optimal']:.2f} → {r['postselected']['p_optimal']:.2f}** "
         f"| {r['postselected']['approx_ratio']:.2f} | {r['raw']['p_feasible']:.0%} "
-        f"| job `{hw['job_id']}` |"
+        f"| job `{hw['job_id']}`: {SCREENSHOTS} |"
     )
     return rows
 

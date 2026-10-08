@@ -65,7 +65,7 @@
 | Ideal statevector | 0.72 | 0.93 | 100% | `results/noisy.json` |
 | fake_torino noise model: raw → post-selected | 0.49 → 0.63 | 0.87 | 77% | `results/noisy.json` |
 | fake_fez noise model: raw → post-selected | 0.53 → 0.66 | 0.89 | 81% | `results/noisy.json` |
-| **`ibm_kingston` (real hardware): raw → post-selected** | **0.51 → 0.65** | 0.88 | 78% | job `db3b1bimb58s7387e0jg` |
+| **`ibm_kingston` (real hardware): raw → post-selected** | **0.51 → 0.65** | 0.88 | 78% | job `db3b1bimb58s7387e0jg`: [workloads](results/hardware/ibm_workloads.png) · [job](results/hardware/ibm_job_details.png) · [histogram](results/hardware/ibm_job_histogram.png) |
 
 Wall time includes classical parameter optimisation on a statevector simulator (8 restarts). It is not a hardware speed measurement.
 
