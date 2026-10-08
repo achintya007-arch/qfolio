@@ -140,7 +140,7 @@ def summarise(p, pub_counts, meta) -> dict: ...          # raw / post-selected /
 | `scripts/run_hardware.py` | `--dry-run` (FakeTorino, same SamplerV2 path) / `--submit` / `--status` / `--collect` → `results/hardware/<job_id>.json` |
 | `scripts/make_figures.py` | all figures from `results/*.json` |
 | `scripts/fill_readme.py` | regenerates the README results tables from JSON (between `<!-- RESULTS:START -->` / `END` markers); last step of `reproduce` |
-| `scripts/make_slides.py` | builds the 3-slide deck `docs/slides.pptx` (numbers from JSON, figures from `results/figures/`) |
+| `scripts/make_slides.py` | builds the deck (title + 3 content slides) `docs/slides.pptx` (numbers from JSON, figures from `results/figures/`) |
 | `scripts/export_pdf.py` | Markdown → HTML → PDF via Edge/Chrome headless (used for `docs/BUSINESS_BRIEF.pdf`) |
 | `scripts/build_report.sh` | executes the notebook → HTML → `site/` |
 | `scripts/build_landing.py` | writes `site/index.html` (results table from `results/*.json`) |

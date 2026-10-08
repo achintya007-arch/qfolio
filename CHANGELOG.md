@@ -22,7 +22,7 @@ First submitted version (Qiskit Fall Fest 2026, Track I2).
   post-selection, readout mitigation → `results/noisy.json`.
 - Figures (`viz.py`, `scripts/make_figures.py`), submission notebook, Streamlit app (4 tabs), Pages report
   and landing page.
-- Story deliverables: one-page business brief (MD + PDF), 3-slide deck with speaker notes
+- Story deliverables: one-page business brief (MD + PDF), slide deck (title + 3 slides) with speaker notes
   (`scripts/make_slides.py`), demo script, `scripts/export_pdf.py`.
 - `scripts/fill_readme.py`: README results tables generated from `results/*.json` (with a test that the
   committed README matches the JSON).

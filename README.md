@@ -120,7 +120,7 @@ qfolio/
 | [08 Testing](docs/08_TESTING.md) | Test strategy and what each test proves |
 | [09 Rubric map](docs/09_RUBRIC_MAP.md) | Each judging criterion → the evidence in this repo |
 | [Business brief](docs/BUSINESS_BRIEF.md) | One-page brief: customer, cost of problem, result, limits |
-| [Demo script](docs/DEMO_SCRIPT.md) | 2-minute video script + 3-slide outline + 3-minute live demo |
+| [Demo script](docs/DEMO_SCRIPT.md) | 2-minute video script + slide outline (title + 3 slides) + 3-minute live demo |
 | [ADRs](docs/adr/) | Architecture decisions and why |
 | [Claude Code prompts](docs/CLAUDE_CODE_PROMPTS.md) | The phase-by-phase build prompts used to build this repo |
 | [Data card](data/README.md) | Source, universe, period, licence |

@@ -1,4 +1,4 @@
-"""Build the 3-slide deck docs/slides.pptx (16:9) following docs/DEMO_SCRIPT.md §A.
+"""Build docs/slides.pptx (16:9, title + 3 content slides) following docs/DEMO_SCRIPT.md §A.
 
 Every number is read from results/*.json, so the deck cannot drift from the results.
 Each slide has speaker notes (~40 s of talking points). All text is >= 20 pt.
@@ -110,6 +110,38 @@ def build(n: dict, tmp: str) -> Presentation:
     prs = Presentation()
     prs.slide_width, prs.slide_height = Inches(13.333), Inches(7.5)
     blank = prs.slide_layouts[6]
+
+    # Title slide.
+    s0 = prs.slides.add_slide(blank)
+    add_text(
+        s0,
+        0.8,
+        2.2,
+        11.7,
+        1.8,
+        ["Q-Folio: Constraint-Preserving QAOA for Portfolio Selection"],
+        size=44,
+        color=PURPLE,
+        bold=True,
+    )
+    add_text(
+        s0,
+        0.8,
+        4.1,
+        11.7,
+        1.0,
+        ["Qiskit Fall Fest 2026 · Industry Track I2", f"{AUTHOR} · GITAM University, Bengaluru"],
+        size=24,
+    )
+    add_text(s0, 0.8, 5.3, 11.7, 0.5, [f"Real results on IBM Quantum {n['backend']}"], color=BLUE)
+    set_notes(
+        s0,
+        "Standard QAOA treats 'pick exactly k stocks' as a penalty and ends up no better than "
+        "random guessing, so I built the constraint into the circuit: every shot is a valid "
+        f"portfolio, it finds the optimal basket about {n['xy'] / n['rand']:.0f}× more often than "
+        "chance, and the same symmetry lets me throw out hardware errors for free on a real IBM "
+        "quantum computer.",
+    )
 
     # Slide 1: the problem.
     s1 = prs.slides.add_slide(blank)
@@ -242,7 +274,7 @@ def build(n: dict, tmp: str) -> Presentation:
 def main() -> None:
     with tempfile.TemporaryDirectory() as tmp:
         prs = build(load_numbers(), tmp)
-        assert len(prs.slides) == 3
+        assert len(prs.slides) == 4  # title + 3 content slides
         prs.save(OUT)
     print(f"wrote {OUT.relative_to(ROOT)}")
 

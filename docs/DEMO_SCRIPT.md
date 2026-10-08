@@ -1,7 +1,9 @@
 # Demo script, slides and video
 
-## A. 3-slide deck (`docs/slides.pptx` / `docs/slides.pdf`)
+## A. Slide deck: title + 3 slides (`docs/slides.pptx` / `docs/slides.pdf`)
 Built by `scripts/make_slides.py` (python-pptx, numbers read from `results/*.json`), exported to PDF with PowerPoint.
+
+**Title slide:** *"Q-Folio: Constraint-Preserving QAOA for Portfolio Selection"*, then event, track, name and university, plus "Real results on IBM Quantum ibm_kingston". Speaker note = the one-sentence pitch from `09_RUBRIC_MAP.md`.
 
 **Slide 1: The problem**
 - Title: *"Picking the best 3 of 6 stocks, on a quantum computer"*
