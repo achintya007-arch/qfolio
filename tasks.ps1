@@ -49,6 +49,7 @@ switch ($Target) {
         # P4 (noise study) is optional until scripts/run_noisy.py exists.
         if (Test-Path "scripts/run_noisy.py") { Invoke-Step $Py @("scripts/run_noisy.py") }
         Invoke-Step $Py @("scripts/make_figures.py")
+        Invoke-Step $Py @("scripts/fill_readme.py")
     }
     "notebook" {
         Invoke-Step $Py @("-m", "jupyter", "nbconvert", "--to", "notebook", "--execute",

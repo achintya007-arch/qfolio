@@ -24,6 +24,7 @@ reproduce:
 	$(PY) scripts/run_benchmark.py
 	if [ -f scripts/run_noisy.py ]; then $(PY) scripts/run_noisy.py; fi
 	$(PY) scripts/make_figures.py
+	$(PY) scripts/fill_readme.py
 
 notebook:
 	jupyter nbconvert --to notebook --execute --inplace notebooks/qfolio.ipynb

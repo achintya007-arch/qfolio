@@ -27,24 +27,53 @@
 | **Noise-aware layer** | Transpiler tuning, **symmetry post-selection** (wrong Hamming weight → discard), readout mitigation and dynamical decoupling, run on noisy simulation **and real IBM hardware**. |
 | **Honesty** | At 4–6 assets, brute force solves this in microseconds. **We do not claim quantum advantage.** The [Limits](#limits) section explains what would need to change for that. |
 
-> ⚠️ Every number in the [Results](#results) section is produced by `make reproduce` and stored in `results/`. Placeholders marked `⟨…⟩` are filled in automatically by the pipeline.
+> ⚠️ Every number in the [Results](#results) section is produced by `make reproduce` and stored in `results/`. The tables below are generated from that JSON by `scripts/fill_readme.py`; do not edit them by hand.
 
 ## Results
 
-| Method | P(optimal) | Approx. ratio | Valid portfolios | Wall time |
+<!-- RESULTS:START -->
+**Robustness: 24 random 3-of-6 instances** (mean ± std; random = 1/C(6,3) = 0.05)
+
+| Method | P(optimal) | P(top-2) | Approx. ratio | Valid portfolios | Wall time |
+|---|---|---|---|---|---|
+| Random valid basket | 0.05 ± 0.00 | 0.10 ± 0.00 | 0.51 ± 0.01 | 100% | — |
+| Brute force (exact) | 1.00 ± 0.00 | 1.00 ± 0.00 | 1.00 ± 0.00 | 100% | 0.42 ms |
+| Greedy heuristic | 1.00 ± 0.00 | 1.00 ± 0.00 | 1.00 ± 0.00 | 100% | 0.25 ms |
+| Simulated annealing (same QUBO) | 0.36 ± 0.08 | 0.53 ± 0.07 | 0.85 ± 0.03 | 100% | 12 s |
+| Penalty-QAOA (X mixer), p=2 | 0.04 ± 0.00 | 0.08 ± 0.01 | 0.53 ± 0.02 | 75% | 31 s |
+| XY-QAOA (Dicke init), p=1 | 0.20 ± 0.10 | 0.32 ± 0.09 | 0.73 ± 0.06 | 100% | 15 s |
+| **XY-QAOA (Dicke init), p=2** | 0.34 ± 0.16 | 0.48 ± 0.12 | 0.81 ± 0.06 | 100% | 66 s |
+| XY-QAOA (Dicke init), p=3 | 0.40 ± 0.19 | 0.51 ± 0.13 | 0.84 ± 0.05 | 100% | 91 s |
+
+**Real NSE instance** (RELIANCE, TCS, HDFCBANK, INFY, ITC, LT; k = 3). The best and second-best baskets differ by only 1.4% of the cost range, so read P(top-2) and AR here.
+
+| Method | P(optimal) | P(top-2) | Approx. ratio | Valid | Top answer = optimum? |
+|---|---|---|---|---|---|
+| Random valid basket | 0.05 | 0.10 | 0.52 | 100% | — |
+| Brute force (exact) | 1.00 | 1.00 | 1.00 | 100% | yes |
+| Greedy heuristic | 1.00 | 1.00 | 1.00 | 100% | yes |
+| Simulated annealing (same QUBO) | 0.30 | 0.54 | 0.90 | 100% | yes |
+| Penalty-QAOA (X mixer), p=2 | 0.04 | 0.09 | 0.56 | 76% | no |
+| XY-QAOA (Dicke init), p=1 | 0.13 | 0.35 | 0.82 | 100% | no |
+| **XY-QAOA (Dicke init), p=2** | 0.12 | 0.37 | 0.84 | 100% | no |
+| XY-QAOA (Dicke init), p=3 | 0.06 | 0.51 | 0.88 | 100% | no |
+
+**Noise ladder: 2 of 4 stocks, XY-QAOA p = 2, 8192 shots** (random = 0.17)
+
+| Run | P(optimal) | Approx. ratio | Valid (raw) | Evidence |
 |---|---|---|---|---|
-| Random feasible guess | ⟨1/C(n,k)⟩ | — | 100% | — |
-| Brute force (exact) | 1.000 | 1.000 | 100% | ⟨…⟩ |
-| Simulated annealing (same QUBO) | ⟨…⟩ | ⟨…⟩ | ⟨…⟩ | ⟨…⟩ |
-| Greedy heuristic | ⟨…⟩ | ⟨…⟩ | 100% | ⟨…⟩ |
-| Penalty-QAOA (X mixer), p=2 | ⟨…⟩ | ⟨…⟩ | ⟨…⟩ | ⟨…⟩ |
-| **XY-QAOA (Dicke init), p=2** | ⟨…⟩ | ⟨…⟩ | ⟨…⟩ | ⟨…⟩ |
-| XY-QAOA on IBM noise model | ⟨…⟩ | ⟨…⟩ | ⟨…⟩ | — |
-| **XY-QAOA on `ibm_⟨backend⟩` (real)** | ⟨…⟩ | ⟨…⟩ | ⟨…⟩ | job `⟨id⟩` |
+| Ideal statevector | 0.72 | 0.93 | 100% | `results/noisy.json` |
+| fake_torino noise model: raw → post-selected | 0.49 → 0.63 | 0.87 | 77% | `results/noisy.json` |
+| fake_fez noise model: raw → post-selected | 0.53 → 0.66 | 0.89 | 81% | `results/noisy.json` |
+| **`ibm_kingston` (real hardware): raw → post-selected** | **0.51 → 0.65** | 0.88 | 78% | job `db3b1bimb58s7387e0jg` |
+
+Wall time includes classical parameter optimisation on a statevector simulator (8 restarts). It is not a hardware speed measurement.
+
+Full interactive report: **https://achintya007-arch.github.io/qfolio/** · Live demo: ⟨Streamlit URL⟩
+<!-- RESULTS:END -->
 
 <p align="center"><img src="results/figures/headline.png" width="720" alt="P(optimal) by method"></p>
 
-Full interactive report: **https://achintya007-arch.github.io/qfolio/**
 
 ## Quickstart
 
