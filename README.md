@@ -138,7 +138,7 @@ qfolio/
 
 Built during Qiskit Fall Fest 2026 at GITAM (School of Sciences × School of CSE × IBM Quantum). All code was written after the challenge announcement on 7 Oct 2026, 14:00 IST. See the commit history.
 
-<sub>AI-assistance disclosure: ⟨fill in according to the event's rules, e.g. "Documentation drafted and code co-written with Claude; all design decisions, experiments and results reviewed and run by the author."⟩</sub>
+<sub>AI-assistance disclosure: Documentation and parts of the code were drafted with AI coding assistance (Claude Code). Problem selection, design decisions, experiments, the IBM hardware runs and all results were directed, run and verified by the author.</sub>
 
 ## License
 
