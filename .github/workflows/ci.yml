@@ -76,6 +76,9 @@ jobs:
       - run: pip install "detect-secrets>=1.5"
       - name: Fail on any secret not in the baseline
         # config_hash (12 hex chars of the config's SHA-256) in results/*.json is not a secret.
+        # Base64 PNG figures saved in the executed notebook ("iVBORw0KGgo" = PNG signature) are
+        # not secrets either; code cells and text outputs are still scanned.
         run: >-
           git ls-files -z | xargs -0 detect-secrets-hook --baseline .secrets.baseline
           --exclude-lines '"config_hash": "[0-9a-f]{12}"'
+          --exclude-lines '"image/png": "iVBORw0KGgo'
